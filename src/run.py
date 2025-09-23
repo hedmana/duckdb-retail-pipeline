@@ -12,6 +12,7 @@ from ingestion.retail_data import ingest_retail_data
 from ingestion.fx_data import ingest_fx_data
 from ingestion.holidays_data import ingest_holidays_data
 from models.dimensions import create_dim_calendar, create_dim_product, create_dim_customer
+from models.facts import create_fct_sales, create_daily_fx_rates, create_fct_sales_eur
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -60,9 +61,9 @@ def run_pipeline(*, conn: duckdb.DuckDBPyConnection, rawdir: Path) -> None:
 
         # Phase 3: Build Fact Tables
         logger.info("Phase 3: Building fact tables")
-        # TODO: create_fct_sales(conn)
-        # TODO: create_daily_fx_rates(conn)
-        # TODO: create_fct_sales_eur(conn)
+        create_fct_sales(conn)
+        create_daily_fx_rates(conn)
+        create_fct_sales_eur(conn)
 
         # Phase 4: Build Aggregations
         logger.info("Phase 4: Building aggregation tables")
