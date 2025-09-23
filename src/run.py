@@ -11,6 +11,7 @@ import duckdb
 from ingestion.retail_data import ingest_retail_data
 from ingestion.fx_data import ingest_fx_data
 from ingestion.holidays_data import ingest_holidays_data
+from models.dimensions import create_dim_calendar, create_dim_product, create_dim_customer
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -53,9 +54,9 @@ def run_pipeline(*, conn: duckdb.DuckDBPyConnection, rawdir: Path) -> None:
 
         # Phase 2: Build Dimensional Tables
         logger.info("Phase 2: Building dimensional tables")
-        # TODO: create_dim_calendar(conn)
-        # TODO: create_dim_product(conn)
-        # TODO: create_dim_customer(conn)
+        create_dim_calendar(conn)
+        create_dim_product(conn)
+        create_dim_customer(conn)
 
         # Phase 3: Build Fact Tables
         logger.info("Phase 3: Building fact tables")
