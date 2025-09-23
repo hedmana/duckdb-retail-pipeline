@@ -34,12 +34,14 @@ def create_dim_calendar(conn: duckdb.DuckDBPyConnection) -> None:
 
     # Extend range slightly for completeness (e.g., include full months)
     start_date = date(min_date.year, min_date.month, 1)  # Start of month
-    
+
     # Handle end of month calculation properly (handle December -> January)
     if max_date.month == 12:
-        end_date = date(max_date.year + 1, 1, 1) - timedelta(days=1)  # End of December
+        end_date = date(max_date.year + 1, 1, 1) - \
+            timedelta(days=1)  # End of December
     else:
-        end_date = date(max_date.year, max_date.month + 1, 1) - timedelta(days=1)  # End of month
+        end_date = date(max_date.year, max_date.month + 1, 1) - \
+            timedelta(days=1)  # End of month
 
     logger.info(f"Calendar dimension range: {start_date} to {end_date}")
 
@@ -145,9 +147,9 @@ def create_dim_product(conn: duckdb.DuckDBPyConnection) -> None:
     Schema: dim_product (stock_code, description, first_seen, last_seen)
     """
     logger.info("Creating dim_product table")
-    
+
     conn.execute("DROP TABLE IF EXISTS dim_product")
-    
+
     # Create product dimension with first/last seen dates
     conn.execute("""
         CREATE TABLE dim_product AS
@@ -164,11 +166,11 @@ def create_dim_product(conn: duckdb.DuckDBPyConnection) -> None:
         GROUP BY stock_code
         ORDER BY stock_code
     """)
-    
+
     # Verify and log statistics
     row_count = conn.execute("SELECT COUNT(*) FROM dim_product").fetchone()[0]
     logger.info(f"Created dim_product with {row_count:,} unique products")
-    
+
     # Sample products
     sample_products = conn.execute("""
         SELECT stock_code, description, first_seen, last_seen
@@ -176,10 +178,11 @@ def create_dim_product(conn: duckdb.DuckDBPyConnection) -> None:
         ORDER BY stock_code 
         LIMIT 5
     """).fetchall()
-    
+
     logger.info("Sample products:")
     for stock_code, desc, first_seen, last_seen in sample_products:
-        logger.info(f"  {stock_code}: {desc[:50]}... ({first_seen} to {last_seen})")
+        logger.info(
+            f"  {stock_code}: {desc[:50]}... ({first_seen} to {last_seen})")
 
 
 def create_dim_customer(conn: duckdb.DuckDBPyConnection) -> None:
@@ -190,9 +193,9 @@ def create_dim_customer(conn: duckdb.DuckDBPyConnection) -> None:
     Includes UNKNOWN_CUSTOMER surrogate for null customer IDs.
     """
     logger.info("Creating dim_customer table")
-    
+
     conn.execute("DROP TABLE IF EXISTS dim_customer")
-    
+
     # Create customer dimension with UNKNOWN_CUSTOMER handling
     conn.execute("""
         CREATE TABLE dim_customer AS
@@ -206,28 +209,30 @@ def create_dim_customer(conn: duckdb.DuckDBPyConnection) -> None:
         GROUP BY COALESCE(customer_id, -1)
         ORDER BY customer_id
     """)
-    
+
     # Verify and log statistics
     row_count = conn.execute("SELECT COUNT(*) FROM dim_customer").fetchone()[0]
     logger.info(f"Created dim_customer with {row_count:,} unique customers")
-    
+
     # Check UNKNOWN_CUSTOMER
     unknown_customer = conn.execute("""
         SELECT customer_id, country 
         FROM dim_customer 
         WHERE customer_id = -1
     """).fetchone()
-    
+
     if unknown_customer:
-        logger.info(f"UNKNOWN_CUSTOMER created: ID={unknown_customer[0]}, Country='{unknown_customer[1]}'")
-    
+        logger.info(
+            f"UNKNOWN_CUSTOMER created: ID={unknown_customer[0]}, Country='{unknown_customer[1]}'")
+
     # Count known vs unknown
     known_customers = conn.execute("""
         SELECT COUNT(*) FROM dim_customer WHERE customer_id != -1
     """).fetchone()[0]
-    
-    logger.info(f"Customer breakdown: {known_customers:,} known customers + 1 UNKNOWN_CUSTOMER")
-    
+
+    logger.info(
+        f"Customer breakdown: {known_customers:,} known customers + 1 UNKNOWN_CUSTOMER")
+
     # Sample customers by country
     sample_customers = conn.execute("""
         SELECT country, COUNT(*) as customer_count
@@ -236,7 +241,7 @@ def create_dim_customer(conn: duckdb.DuckDBPyConnection) -> None:
         ORDER BY customer_count DESC 
         LIMIT 5
     """).fetchall()
-    
+
     logger.info("Top countries by customer count:")
     for country, count in sample_customers:
         logger.info(f"  {country}: {count:,} customers")
