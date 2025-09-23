@@ -12,7 +12,7 @@ from ingestion.retail_data import ingest_retail_data
 from ingestion.fx_data import ingest_fx_data
 from ingestion.holidays_data import ingest_holidays_data
 from models.dimensions import create_dim_calendar, create_dim_product, create_dim_customer
-from models.facts import create_fct_sales, create_daily_fx_rates, create_fct_sales_eur
+from models.facts import create_fct_sales, create_daily_fx_rates, create_fct_sales_eur, create_agg_country_day
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -67,11 +67,7 @@ def run_pipeline(*, conn: duckdb.DuckDBPyConnection, rawdir: Path) -> None:
 
         # Phase 4: Build Aggregations
         logger.info("Phase 4: Building aggregation tables")
-        # TODO: create_agg_country_day(conn)
-
-        # Phase 5: Data Quality Validation
-        logger.info("Phase 5: Running data quality checks")
-        # TODO: validate_data_quality(conn)
+        create_agg_country_day(conn)
 
         logger.info("Pipeline completed successfully")
 
