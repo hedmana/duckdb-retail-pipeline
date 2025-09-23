@@ -4,5 +4,8 @@
 # Python cache files
 __pycache__/
 
+# Build outputs
+build/
+
 # Test scripts
 test/
