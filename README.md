@@ -35,8 +35,11 @@ The pipeline processes retail transactions through these layers:
 ### Setup Environment
 ```bash
 # Clone repository
-git clone <your-repo>
+git clone duckdb-retail-pipeline
 cd duckdb-retail-pipeline
+
+# Pull large data files
+git lfs pull
 
 # Create and activate virtual environment
 uv venv
