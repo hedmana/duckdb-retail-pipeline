@@ -1,4 +1,9 @@
-"""UK bank holidays data ingestion."""
+"""
+UK bank holidays data ingestion from Excel files.
+
+Processes UK bank holiday dates for calendar dimension enrichment
+and business day analysis in retail analytics.
+"""
 
 import logging
 from pathlib import Path

@@ -1,4 +1,11 @@
-"""Fact table creation for sales transactions and currency conversions."""
+"""
+Fact table creation for sales transactions and currency conversions.
+
+Creates fact tables with proper business logic:
+- Sales fact table with line-item granularity
+- EUR-converted fact table using ECB rates
+- Daily aggregation tables for analytics performance
+"""
 
 import logging
 

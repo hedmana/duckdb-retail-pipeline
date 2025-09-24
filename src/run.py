@@ -1,4 +1,15 @@
-"""Retail data pipeline entrypoint for DuckDB-based analytics."""
+#!/usr/bin/env python3
+"""
+Retail data pipeline entrypoint for DuckDB-based analytics.
+
+This script orchestrates the complete ETL pipeline:
+1. Data ingestion from raw files (Excel, XML, XLS)
+2. Dimensional modeling with star schema
+3. Fact table creation with referential integrity
+4. Currency conversion and aggregation tables
+
+Usage: python src/run.py --rebuild
+"""
 
 from __future__ import annotations
 

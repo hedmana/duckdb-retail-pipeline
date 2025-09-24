@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Data exploration script for GBP exchange rate XML structure.
+Explores the ECB XML format to understand the data schema.
+"""
+
 import xml.etree.ElementTree as ET
 from datetime import datetime
 

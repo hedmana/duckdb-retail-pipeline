@@ -1,4 +1,9 @@
-"""Retail transaction data ingestion."""
+"""
+Retail transaction data ingestion from Excel files.
+
+Handles multi-sheet Excel files with retail transaction data,
+including data cleaning, validation, and staging table creation.
+"""
 
 import logging
 from pathlib import Path

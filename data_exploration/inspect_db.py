@@ -1,4 +1,8 @@
-"""Quick database inspection script."""
+#!/usr/bin/env python3
+"""
+Database inspection script for retail data warehouse.
+Shows table structure and basic statistics.
+"""
 
 import duckdb
 

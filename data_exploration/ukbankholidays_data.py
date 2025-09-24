@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Data exploration script for UK bank holidays Excel file.
+Examines holiday data structure and date ranges.
+"""
+
 import pandas as pd
 
 # Read the holidays file

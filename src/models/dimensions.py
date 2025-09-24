@@ -1,8 +1,11 @@
-# The line `"""Data models for dimensional and fact tables."""` is a multi-line string enclosed within
-# triple double quotes. This is typically used as a docstring in Python to provide documentation or a
-# description of the purpose of the code that follows it. In this case, it suggests that the code that
-# follows defines data models for dimensional and fact tables.
-"""Calendar dimension table creation."""
+"""
+Dimensional table creation for retail data warehouse.
+
+Creates dimension tables following star schema design:
+- Calendar dimension with business calendar logic
+- Product dimension with lifecycle tracking  
+- Customer dimension with geographic context
+"""
 
 import logging
 from datetime import datetime, date, timedelta

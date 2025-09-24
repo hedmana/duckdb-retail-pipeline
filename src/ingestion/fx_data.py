@@ -1,4 +1,9 @@
-"""GBP foreign exchange rate data ingestion from ECB XML."""
+"""
+GBP foreign exchange rate data ingestion from ECB XML.
+
+Parses ECB SDMX XML format, extracts GBP/EUR exchange rates,
+and creates staging tables with forward-filled rates for missing dates.
+"""
 
 import logging
 import xml.etree.ElementTree as ET
