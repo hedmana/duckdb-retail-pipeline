@@ -245,23 +245,12 @@ ORDER BY revenue_eur DESC;
 
 ## 🛠️ Development
 
-### Adding New Analysis
-```bash
-# Create new analysis script
-cp analysis/analyze_monthly_sales.py analysis/my_analysis.py
-
-# Add SQL views as needed
-echo "CREATE VIEW v_my_view AS SELECT ..." > sql/views/my_view.sql
-
-# Run analysis
-python analysis/my_analysis.py
-```
-
 ### Data Exploration
 ```bash
 # Explore raw data structure
 python data_exploration/online_retail_data.py
 python data_exploration/gbp_data.py
+python data_exploration/ukbankholidays_data.py
 
 # Inspect generated database
 python data_exploration/inspect_db.py
@@ -293,25 +282,6 @@ uv lock --upgrade
 export PYTHONPATH=src
 python -m logging DEBUG src/run.py --rebuild
 ```
-
-## 📈 Performance Characteristics
-
-- **Processing Time**: ~3 minutes for 1M+ transactions
-- **Memory Usage**: <2GB RAM for full dataset
-- **Storage**: ~100MB database file
-- **Scalability**: Designed for datasets up to 10M+ transactions
-
-## 🎯 Business Value
-
-This pipeline demonstrates:
-- **Real-world Skills**: Production ETL patterns and data warehousing
-- **International Scope**: Multi-currency analysis for global businesses  
-- **Performance Engineering**: Optimized aggregations and indexing strategies
-- **Data Quality**: Enterprise-grade validation and error handling
-- **Business Intelligence**: Actionable insights and professional visualizations
-
-Perfect for showcasing modern data engineering capabilities in interviews and portfolio demonstrations.
-
 ---
 
 *Built with DuckDB, Python 3.13, and modern data engineering best practices.*
