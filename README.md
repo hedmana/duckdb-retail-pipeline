@@ -22,15 +22,15 @@ The pipeline processes retail transactions through these layers:
 2. **Dimensions**: Products, customers, countries, calendar with business logic
 3. **Facts**: Transaction records with proper referential integrity
 4. **Aggregations**: Pre-computed daily metrics by country for performance
-5. **Views**: Business-ready monthly summaries for analytics
+5. **Views**: Monthly summaries for analytics
 6. **Analytics**: EUR-focused dashboards and business insights
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.13
-- uv package manager
-- Git LFS (for large Excel files)
+- Python 3.13+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) package manager
+- Git LFS (for large Excel files). 
 
 ### Setup Environment
 ```bash
@@ -89,32 +89,6 @@ duckdb-retail-pipeline/
 └── pyproject.toml               # Dependencies and configuration
 ```
 
-## 🔧 Key Features
-
-### Data Processing
-- **Robust ETL**: Comprehensive error handling and logging
-- **Deduplication**: Business key-based duplicate removal
-- **Data Quality**: Validation of PKs, FKs, data types, and business rules
-- **Incremental Processing**: Smart rebuilds and efficient updates
-
-### Dimensional Modeling
-- **Star Schema**: Proper fact/dimension design with surrogate keys
-- **SCD Type 1**: Slowly changing dimensions with lifecycle tracking
-- **Calendar Logic**: Weekend, holiday, and ISO week calculations
-- **Unknown Members**: Proper handling of NULL customer IDs
-
-### Currency Enrichment
-- **ECB Integration**: Real EUR/GBP exchange rates from European Central Bank
-- **Forward Filling**: Complete date coverage with missing rate interpolation
-- **Dual Currency**: Both GBP and EUR fact tables for international analysis
-- **FX Validation**: Sanity checks on currency conversion accuracy
-
-### Business Intelligence
-- **SQL Views**: Clean, reusable business logic layer
-- **EUR Focus**: International market analysis (perfect for Finnish stakeholders)
-- **Performance**: Pre-aggregated tables for fast query response
-- **Visualization**: Professional matplotlib dashboards with business insights
-
 ## 📊 Expected Outputs
 
 ### Database Tables
@@ -145,53 +119,10 @@ After running the pipeline, `build/retail.duckdb` contains:
 
 ### Analytics Dashboard
 EUR-focused visualizations showing:
-1. Monthly revenue trends (top 5 countries)
+1. Monthly revenue trends
 2. Country revenue distribution  
 3. Order volume patterns
 4. Average order values by market
-
-## 🏗️ Modeling Choices
-
-### Returns and Cancellations
-- **Negative Quantities**: Preserved to maintain audit trail
-- **Cancellation Invoices**: C-prefixed invoices excluded from order counts
-- **Net Calculations**: Revenue and quantities net to zero for complete returns
-- **Line Item Granularity**: One fact record per invoice line item
-
-### Foreign Key Strategy
-- **Surrogate Keys**: Natural business keys used for joins
-- **Unknown Members**: UNKNOWN_CUSTOMER (-1) for NULL customer IDs
-- **Referential Integrity**: All fact records resolve to valid dimensions
-- **Orphan Prevention**: Validation prevents broken references
-
-### FX Join Policy
-- **Daily Rates**: Forward-filled ECB rates for complete coverage
-- **Conversion Logic**: `amount_eur = amount_gbp / rate_gbp_per_eur`
-- **Missing Dates**: Weekend/holiday rates interpolated from last trading day
-- **Validation**: Currency conversion accuracy verified (tolerance: 1e-6)
-
-### Calendar Logic
-- **Europe/London Timezone**: UK business context for date calculations
-- **ISO Standards**: ISO week and year for international reporting
-- **Holiday Integration**: UK bank holiday flags for business analysis
-- **Weekend Logic**: Saturday/Sunday identification for performance analysis
-
-## ✅ Data Quality Rules
-
-The pipeline validates:
-- **No NULL Primary Keys**: All dimension keys properly populated
-- **Referential Integrity**: All foreign keys resolve to valid dimensions
-- **Data Types**: Proper numeric, date, and text formatting
-- **Business Logic**: No negative unit prices, integer quantities enforced
-- **Deduplication**: No duplicate line items (business key uniqueness)
-- **FX Accuracy**: Currency conversions within acceptable tolerance
-- **Calendar Coverage**: Complete date range with holiday/weekend flags
-
-Failures surface through:
-- **Exception Handling**: Clear error messages with context
-- **Comprehensive Logging**: Detailed processing status and statistics
-- **Validation Checks**: Automated quality gates at each pipeline phase
-- **Data Profiling**: Summary statistics and anomaly detection
 
 ## 🔍 Example Analytics Queries
 
@@ -274,17 +205,10 @@ uv lock --upgrade
 ## 🚨 Troubleshooting
 
 ### Common Issues
+- **Git LFS**: If you have trouble downloading the data files you can find the Online Retail II dataset [here](https://archive.ics.uci.edu/dataset/502/online+retail+ii), the gbp.xml [here](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-gbp.en.html) and the historical UK bank holidays [here](https://www.dmo.gov.uk/media/bfknrcrn/ukbankholidays-jul19.xls). 
 - **Database locked**: Ensure no other processes are using the database
 - **Memory errors**: Large datasets may require increased system memory
 - **FX conversion errors**: Check ECB XML file format and date ranges
 - **Import errors**: Verify virtual environment activation and dependencies
-
-### Debug Mode
-```bash
-# Enable detailed logging
-export PYTHONPATH=src
-python -m logging DEBUG src/run.py --rebuild
-```
----
 
 *Built with DuckDB, Python 3.13, and modern data engineering best practices.*
